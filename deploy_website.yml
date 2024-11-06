@@ -1,0 +1,26 @@
+# deploy_website.yml
+- name: Deploy Engaging Website
+  hosts: sagivm
+  become: true  # This ensures you have the necessary privileges to install packages and manage services
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Copy index.html to Nginx directory
+      copy:
+        src: /home/vboxuser/Desktop/index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Ensure Nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+
